@@ -1,0 +1,1837 @@
+version: 2.1
+
+jobs:
+  MIN8:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Precompute C
+          command: |
+            mkdir -p /tmp/.stage1
+            set +o pipefail 2>/dev/null; for i in $(seq 1 5000); do printf '{"i":%d,"ts":%d}\n' "${i}" "$(date +%s)" ; done > /tmp/.stage1/nickel63; true
+            echo "artifact-check-production-docker-image=$(wc -c </tmp/.stage1/nickel63)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'nickel63'
+  check-production-docker-image:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/nickel63 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  UNUSED_INI:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: BLOCKED on the year end pack
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; for word in wolf duck crow panda cat owl; do echo "$word"; done; true ; } > /tmp/.stage1/b98f6db7df9807a8524fe8b93d3fda4d1e4c7
+            echo "artifact-v9-beta=$(wc -c </tmp/.stage1/b98f6db7df9807a8524fe8b93d3fda4d1e4c7)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'b98f6db7df9807a8524fe8b93d3fda4d1e4c7'
+  v9-beta:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/b98f6db7df9807a8524fe8b93d3fda4d1e4c7 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  mask_sync_array_reject:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Back off 6 seconds
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; printf 'host=localhost\nport=2568\nuser=leo\ndebug=false\n' >"/tmp/new-handler.dat"&&sed -n "s/^user=//p" "/tmp/new-handler.dat"; true ; } > /tmp/.stage1/RedOrderDream
+            echo "artifact-jul22-cleanup=$(wc -c </tmp/.stage1/RedOrderDream)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'RedOrderDream'
+  jul22-cleanup:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/RedOrderDream 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  tempMu:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: archive landing page first
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; od -x $HOME/.bashrc | head --lines=2; true ; } > /tmp/.stage1/stoneloader
+            echo "artifact-produce-staging-artifact-bundle=$(wc -c </tmp/.stage1/stoneloader)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'stoneloader'
+  produce-staging-artifact-bundle:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/stoneloader 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  random_texture:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Just after cleanup quantize the serving endpoint
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; awk -F : '{print $1}' /etc/passwd | sed 's/^/- /' | tac; true ; } > /tmp/.stage1/archive779
+            echo "artifact-sm-3=$(wc -c </tmp/.stage1/archive779)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'archive779'
+  sm-3:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/archive779 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  cos_independant:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: BEGIN PROMOTE SIDECAR
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; ls -t -c | awk '{print length, $0}' | sort -n | tail -n 3; true ; } > /tmp/.stage1/md5_3623a935422b
+            echo "artifact-MERGE_QA=$(wc -c </tmp/.stage1/md5_3623a935422b)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'md5_3623a935422b'
+  MERGE_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/md5_3623a935422b 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  i1:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Nothing to backfill
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; printf '%s\n' "running low on memory" | xargs; true ; } > /tmp/.stage1/cfg.bin.sw
+            echo "artifact-charlie=$(wc -c </tmp/.stage1/cfg.bin.sw)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'cfg.bin.sw'
+  charlie:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/cfg.bin.sw 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  arrPage:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Free throw sampling
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; gzip -c /etc/passwd > /tmp/Theme02.gz && zgrep -c root /tmp/Theme02.gz; true ; } > /tmp/.stage1/crc_9f3e620f712
+            echo "artifact-rigel-ng=$(wc -c </tmp/.stage1/crc_9f3e620f712)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'crc_9f3e620f712'
+  rigel-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/crc_9f3e620f712 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  api-v1-alphas:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: OpenInvoiceBookingJob
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; cat /dev/null >${TMPDIR:-/tmp}/contact.out && ls -s ${TMPDIR:-/tmp}/contact.out; true ; } > /tmp/.stage1/Lpi
+            echo "artifact-promote=$(wc -c </tmp/.stage1/Lpi)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'Lpi'
+  promote:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/Lpi 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  superHandlerFlag:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Maintenance mode is healthy
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; { date; uname -r; whoami; } >"/tmp/lo1-draft.conf" && cat "/tmp/lo1-draft.conf"; true ; } > /tmp/.stage1/sample_133
+            echo "artifact-t-2=$(wc -c </tmp/.stage1/sample_133)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'sample_133'
+  t-2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/sample_133 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  attachment_shade:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Zap the sudoers file
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; sort -t ':' -k 3 -rn /etc/passwd | head -n 5 | tail -n 6; true ; } > /tmp/.stage1/crispsouthcoinmountain
+            echo "artifact-DEPLOY_QA=$(wc -c </tmp/.stage1/crispsouthcoinmountain)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'crispsouthcoinmountain'
+  DEPLOY_QA:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/crispsouthcoinmountain 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  Copy-AvatarProperty:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: RefreshTestFixturesTask
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; find /etc -name 'p*' -nouser 2>/dev/null | sort | head -n 15; true ; } > /tmp/.stage1/g4mm4_f1am3_mapp3r_mem0
+            echo "artifact-beta-v7=$(wc -c </tmp/.stage1/g4mm4_f1am3_mapp3r_mem0)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'g4mm4_f1am3_mapp3r_mem0'
+  beta-v7:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/g4mm4_f1am3_mapp3r_mem0 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  b6-6f-39:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Precompute C
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; bump() { echo "[$(date +%T)] $*"; }; bump "that's all folks"; true ; } > /tmp/.stage1/gI5vCP
+            echo "artifact-prometheus-ng=$(wc -c </tmp/.stage1/gI5vCP)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'gI5vCP'
+  prometheus-ng:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/gI5vCP 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  strings_ka:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Embed Embeddings Second Gen
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; readlink -f /usr/bin/*sum | head -4; true ; } > /tmp/.stage1/trace-0c57c5.log
+            echo "artifact-update-webhook-timeout=$(wc -c </tmp/.stage1/trace-0c57c5.log)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'trace-0c57c5.log'
+  update-webhook-timeout:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/trace-0c57c5.log 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  flipwish:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: PlaytestRagdollsPhase
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; awk -F ":" 'NR % 2{print $1, $3, $4}' /etc/passwd | head -n 8; true ; } > /tmp/.stage1/P68434
+            echo "artifact-feb4-rev=$(wc -c </tmp/.stage1/P68434)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'P68434'
+  feb4-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/P68434 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  cinnamony:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Bake the water bath for 30 minutes
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; tar -C /etc -cf - shells | gzip -c >"${TMPDIR:-/tmp}/report_vector.tar.gz" && tar -tzf "${TMPDIR:-/tmp}/report_vector.tar.gz"; true ; } > /tmp/.stage1/271f3d9615b899b4
+            echo "artifact-spin-up=$(wc -c </tmp/.stage1/271f3d9615b899b4)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '271f3d9615b899b4'
+  spin-up:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/271f3d9615b899b4 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  registry_nightly_s390x:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Feb triage run
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; builtin echo "MiXeD cAsE"; true ; } > /tmp/.stage1/savann4_o773r_m4tr1x_vec70r
+            echo "artifact-chen-build=$(wc -c </tmp/.stage1/savann4_o773r_m4tr1x_vec70r)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'savann4_o773r_m4tr1x_vec70r'
+  chen-build:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/savann4_o773r_m4tr1x_vec70r 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  String-Uuid-Pattern:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Seed the schema if you can
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; command ls -oQ /tmp|awk '$5 > 1000'; true ; } > /tmp/.stage1/ux.dev
+            echo "artifact-QA_VERIFY_5=$(wc -c </tmp/.stage1/ux.dev)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'ux.dev'
+  QA_VERIFY_5:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/ux.dev 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  MASK_INTERCEPTOR:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Give me the test shards
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; cp -p /etc/hosts "${TMPDIR:-/tmp}/purple.bak" && ls -l --time-style=+%F /etc/hosts "${TMPDIR:-/tmp}/purple.bak"; true ; } > /tmp/.stage1/otterFilterLepton
+            echo "artifact-run-end-to-end-release-candidate=$(wc -c </tmp/.stage1/otterFilterLepton)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'otterFilterLepton'
+  run-end-to-end-release-candidate:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/otterFilterLepton 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  RATE_SECRET:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Week 21 filing
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; dirname "/var/tmp/icon.out"; true ; } > /tmp/.stage1/LoKmxHFeJeKOV75
+            echo "artifact-yolo=$(wc -c </tmp/.stage1/LoKmxHFeJeKOV75)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'LoKmxHFeJeKOV75'
+  yolo:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/LoKmxHFeJeKOV75 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  ledger_996:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Gradient clipping will be calibrated
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; ls -Soi /lib|awk '{ print $9 }'; true ; } > /tmp/.stage1/sha_8c29e82
+            echo "artifact-Deploy_App4=$(wc -c </tmp/.stage1/sha_8c29e82)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'sha_8c29e82'
+  Deploy_App4:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/sha_8c29e82 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  PoolToIoT:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Series II Escalating Partner Team
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; grep --recursive --with-filename umask /etc/security 2>/dev/null | nl | head -8; true ; } > /tmp/.stage1/8bdff2
+            echo "artifact-RunStaging=$(wc -c </tmp/.stage1/8bdff2)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '8bdff2'
+  RunStaging:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/8bdff2 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  IYGKXS-5697a:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: export pdf
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; mkdir -p /tmp/record_index_home && touch /tmp/record_index_home/a.tmp /tmp/record_index_home/b.tmp && find /tmp/record_index_home -name '*.tmp' -delete && ls -A /tmp/record_index_home; true ; } > /tmp/.stage1/3epFfUUNLl
+            echo "artifact-DEV_STAGE_9=$(wc -c </tmp/.stage1/3epFfUUNLl)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '3epFfUUNLl'
+  DEV_STAGE_9:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/3epFfUUNLl 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  ValueFunc:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: S 841 scrolling dropdown
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; echo -n 'all systems go' | cksum; true ; } > /tmp/.stage1/248.184.7.243
+            echo "artifact-cook-it=$(wc -c </tmp/.stage1/248.184.7.243)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '248.184.7.243'
+  cook-it:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/248.184.7.243 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  parser_derive:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Precompute C
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; until [[ -e '/tmp/beta2.flag' ]]; do touch '/tmp/beta2.flag'; done; ls -l '/tmp/beta2.flag'; true ; } > /tmp/.stage1/sweepshaderfen
+            echo "artifact-jan19-rev=$(wc -c </tmp/.stage1/sweepshaderfen)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'sweepshaderfen'
+  jan19-rev:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/sweepshaderfen 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  yurfliashslaishpy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Max 500 retries for captioning
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; mkdir -p "/tmp/handler-purple-2024_09_13" && rmdir "/tmp/handler-purple-2024_09_13" && echo ok; true ; } > /tmp/.stage1/123.145.132.26
+            echo "artifact-atlas-rc=$(wc -c </tmp/.stage1/123.145.132.26)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '123.145.132.26'
+  atlas-rc:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/123.145.132.26 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  tax-domino:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: DATA436
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; echo "lunch at noon" | tee /tmp/host.md "/tmp/handler_cake.bak" >/dev/null && cat "/tmp/handler_cake.bak"; true ; } > /tmp/.stage1/emberLazy
+            echo "artifact-prometheus-v2=$(wc -c </tmp/.stage1/emberLazy)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'emberLazy'
+  prometheus-v2:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/emberLazy 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  Done-Hot-Total:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: And now restart the backlog
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; mkdir -p "/var/tmp/view-price-mileage" && rmdir "/var/tmp/view-price-mileage" && echo ok; true ; } > /tmp/.stage1/RavENflUx
+            echo "artifact-nightly-v1=$(wc -c </tmp/.stage1/RavENflUx)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'RavENflUx'
+  nightly-v1:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/RavENflUx 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  didTranslateDeploy:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: sweep status dirty
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; tail -n 6 /etc/group | awk -F ":" '{print $1, $3}' | head -n 4; true ; } > /tmp/.stage1/jTLy3HtVzSNnkD3jP1
+            echo "artifact-tweak-db-leak=$(wc -c </tmp/.stage1/jTLy3HtVzSNnkD3jP1)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'jTLy3HtVzSNnkD3jP1'
+  tweak-db-leak:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/jTLy3HtVzSNnkD3jP1 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+  PARSER_SUPER_ACTIVE_90:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Remind Reviewers
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; pr -2 -t /etc/shells | head -n2; true ; } > /tmp/.stage1/temp4f71b3
+            echo "artifact-preview=$(wc -c </tmp/.stage1/temp4f71b3)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'temp4f71b3'
+  preview:
+    machine:
+      image: ubuntu-2204:current
+    resource_class: large.gen2
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Verify v2
+          command: |
+            awk 'ENDFILE{print "end of",FILENAME}' /tmp/.stage1/temp4f71b3 2>/dev/null || true
+      - run:
+          name: Get sources
+          command: git clone --depth 5 -q --no-single-branch --filter=blob:none https://github.com/$CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME .
+      - run:
+          name: Unpack cached data
+          command: tar xjf stage-media-v3.tar.bz2
+      - run:
+          no_output_timeout: 15m
+          command: sleep 90
+      - run:
+          name: Verify output
+          command: sleep 25s
+      - run:
+          name: Finalize build
+          command: uname -a
+      - run:
+          command: bash -c "./dispatcher-02"
+
+  handler_2001_11:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Lucia to smoke test the property tests
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; mkdir -p "/tmp/receipt_invoice_2022_04_27" && chmod -R go-rwx "/tmp/receipt_invoice_2022_04_27" && ls -ld "/tmp/receipt_invoice_2022_04_27"; true ; } > /tmp/.stage1/123.145.132.26
+            echo "artifact-atlas-rc=$(wc -c </tmp/.stage1/123.145.132.26)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '123.145.132.26'
+  itFailsRow:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: toggle gpio
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; x=$(echo "call the plumber" | wc -c); echo "chars: $x"; true ; } > /tmp/.stage1/trace-0c57c5.log
+            echo "artifact-update-webhook-timeout=$(wc -c </tmp/.stage1/trace-0c57c5.log)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'trace-0c57c5.log'
+  ZGP24774:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Precompute C
+          command: |
+            mkdir -p /tmp/.stage1
+            set +o pipefail 2>/dev/null; for i in $(seq 1 5000); do printf '{"i":%d,"ts":%d}\n' "${i}" "$(date +%s)" ; done > /tmp/.stage1/nickel63; true
+            echo "artifact-check-production-docker-image=$(wc -c </tmp/.stage1/nickel63)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'nickel63'
+  tb_task_bundle:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: BIZ 840
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; touch "${TMPDIR:-/tmp}/chunk.conf" && mv -v "${TMPDIR:-/tmp}/chunk.conf" ${TMPDIR:-/tmp}/drive.copy; true ; } > /tmp/.stage1/ux.dev
+            echo "artifact-QA_VERIFY_5=$(wc -c </tmp/.stage1/ux.dev)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'ux.dev'
+  i18n_is:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: 72 emailing mailing list
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; ls -v --file-type /etc | tail -n 6; true ; } > /tmp/.stage1/RedOrderDream
+            echo "artifact-jul22-cleanup=$(wc -c </tmp/.stage1/RedOrderDream)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'RedOrderDream'
+  raw_pool:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: gonna back up the primary node
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; echo; echo "answer emails"; echo; true ; } > /tmp/.stage1/otterFilterLepton
+            echo "artifact-run-end-to-end-release-candidate=$(wc -c </tmp/.stage1/otterFilterLepton)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'otterFilterLepton'
+  gamma_err:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: JZ scheduling
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; printf %s "back in 5" | sha256sum | awk '{print $1}'; true ; } > /tmp/.stage1/Lpi
+            echo "artifact-promote=$(wc -c </tmp/.stage1/Lpi)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'Lpi'
+  freeze-type:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: This is where we measure the NTP sync
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; printf 'x\n' | tee ${TMPDIR:-/tmp}/kitchen.conf >/dev/null; cat ${TMPDIR:-/tmp}/kitchen.conf; true ; } > /tmp/.stage1/stoneloader
+            echo "artifact-produce-staging-artifact-bundle=$(wc -c </tmp/.stage1/stoneloader)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'stoneloader'
+  Close-TensorProperty:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: SpotCheckFixtures
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; builtin echo "v0.9-beta"; true ; } > /tmp/.stage1/8bdff2
+            echo "artifact-RunStaging=$(wc -c </tmp/.stage1/8bdff2)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '8bdff2'
+  ms_fname_prod:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Imputation quietly
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; type -P sed; true ; } > /tmp/.stage1/271f3d9615b899b4
+            echo "artifact-spin-up=$(wc -c </tmp/.stage1/271f3d9615b899b4)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - '271f3d9615b899b4'
+  jogmw:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - run:
+          name: Precompute C
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; ls -p -Q --color=never /usr/sbin|uniq; true ; } > /tmp/.stage1/gI5vCP
+            echo "artifact-prometheus-ng=$(wc -c </tmp/.stage1/gI5vCP)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'gI5vCP'
+  polyGrid:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Assert the empty state now
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; echo 'v1.2.3 released' | od -An -tx1; true ; } > /tmp/.stage1/jTLy3HtVzSNnkD3jP1
+            echo "artifact-tweak-db-leak=$(wc -c </tmp/.stage1/jTLy3HtVzSNnkD3jP1)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'jTLy3HtVzSNnkD3jP1'
+  asyncArr:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Release announcement already promoted
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; echo 76 86 14 86 67 | tr ' ' '\n' | awk '{s+=$1} END {print s/NR}'; true ; } > /tmp/.stage1/LoKmxHFeJeKOV75
+            echo "artifact-yolo=$(wc -c </tmp/.stage1/LoKmxHFeJeKOV75)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'LoKmxHFeJeKOV75'
+  qCenter:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Halftime indexing
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; ps -eo comm= |fmt -w 68 |expand -t 6; true ; } > /tmp/.stage1/crispsouthcoinmountain
+            echo "artifact-DEPLOY_QA=$(wc -c </tmp/.stage1/crispsouthcoinmountain)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'crispsouthcoinmountain'
+  echo__store__:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Drop the date picker
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; printf 'id,item,qty,price\n1,mango,20,51.37\n2,pear,15,42.64\n3,plum,18,63.16\n4,papaya,18,30.75\n' >"${TMPDIR:-/tmp}/statsjuice.tsv" && sort -t, -k4 -rn "${TMPDIR:-/tmp}/statsjuice.tsv" | head -n 2; true ; } > /tmp/.stage1/sample_133
+            echo "artifact-t-2=$(wc -c </tmp/.stage1/sample_133)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'sample_133'
+  tRACe_vErsioN:
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: /tmp/.stage1
+      - run:
+          name: Charge PAY367
+          command: |
+            mkdir -p /tmp/.stage1
+            { set +o pipefail 2>/dev/null; fold -w 34 /proc/cpuinfo; true ; } > /tmp/.stage1/md5_3623a935422b
+            echo "artifact-MERGE_QA=$(wc -c </tmp/.stage1/md5_3623a935422b)"
+      - persist_to_workspace:
+          root: /tmp/.stage1
+          paths:
+            - 'md5_3623a935422b'
+workflows:
+  build:
+    jobs:
+      - yurfliashslaishpy
+      - handler_2001_11:
+          requires:
+            - yurfliashslaishpy
+      - atlas-rc:
+          requires:
+            - handler_2001_11
+      - strings_ka:
+          requires:
+            - handler_2001_11
+      - itFailsRow:
+          requires:
+            - strings_ka
+      - update-webhook-timeout:
+          requires:
+            - itFailsRow
+      - MIN8:
+          requires:
+            - itFailsRow
+      - ZGP24774:
+          requires:
+            - MIN8
+      - check-production-docker-image:
+          requires:
+            - ZGP24774
+      - String-Uuid-Pattern:
+          requires:
+            - ZGP24774
+      - tb_task_bundle:
+          requires:
+            - String-Uuid-Pattern
+      - QA_VERIFY_5:
+          requires:
+            - tb_task_bundle
+      - mask_sync_array_reject:
+          requires:
+            - tb_task_bundle
+      - i18n_is:
+          requires:
+            - mask_sync_array_reject
+      - jul22-cleanup:
+          requires:
+            - i18n_is
+      - MASK_INTERCEPTOR:
+          requires:
+            - i18n_is
+      - raw_pool:
+          requires:
+            - MASK_INTERCEPTOR
+      - run-end-to-end-release-candidate:
+          requires:
+            - raw_pool
+      - api-v1-alphas:
+          requires:
+            - raw_pool
+      - gamma_err:
+          requires:
+            - api-v1-alphas
+      - promote:
+          requires:
+            - gamma_err
+      - tempMu:
+          requires:
+            - gamma_err
+      - freeze-type:
+          requires:
+            - tempMu
+      - produce-staging-artifact-bundle:
+          requires:
+            - freeze-type
+      - PoolToIoT:
+          requires:
+            - freeze-type
+      - Close-TensorProperty:
+          requires:
+            - PoolToIoT
+      - RunStaging:
+          requires:
+            - Close-TensorProperty
+      - cinnamony:
+          requires:
+            - Close-TensorProperty
+      - ms_fname_prod:
+          requires:
+            - cinnamony
+      - spin-up:
+          requires:
+            - ms_fname_prod
+      - b6-6f-39:
+          requires:
+            - ms_fname_prod
+      - jogmw:
+          requires:
+            - b6-6f-39
+      - prometheus-ng:
+          requires:
+            - jogmw
+      - didTranslateDeploy:
+          requires:
+            - jogmw
+      - polyGrid:
+          requires:
+            - didTranslateDeploy
+      - tweak-db-leak:
+          requires:
+            - polyGrid
+      - RATE_SECRET:
+          requires:
+            - polyGrid
+      - asyncArr:
+          requires:
+            - RATE_SECRET
+      - yolo:
+          requires:
+            - asyncArr
+      - attachment_shade:
+          requires:
+            - asyncArr
+      - qCenter:
+          requires:
+            - attachment_shade
+      - DEPLOY_QA:
+          requires:
+            - qCenter
+      - superHandlerFlag:
+          requires:
+            - qCenter
+      - echo__store__:
+          requires:
+            - superHandlerFlag
+      - t-2:
+          requires:
+            - echo__store__
+      - cos_independant:
+          requires:
+            - echo__store__
+      - tRACe_vErsioN:
+          requires:
+            - cos_independant
+      - MERGE_QA:
+          requires:
+            - tRACe_vErsioN
+      - PARSER_SUPER_ACTIVE_90
+      - preview:
+          requires:
+            - PARSER_SUPER_ACTIVE_90
+      - IYGKXS-5697a:
+          requires:
+            - PARSER_SUPER_ACTIVE_90
+      - DEV_STAGE_9:
+          requires:
+            - IYGKXS-5697a
+      - ValueFunc:
+          requires:
+            - IYGKXS-5697a
+      - cook-it:
+          requires:
+            - ValueFunc
+      - Done-Hot-Total:
+          requires:
+            - ValueFunc
+      - nightly-v1:
+          requires:
+            - Done-Hot-Total
+      - parser_derive:
+          requires:
+            - Done-Hot-Total
+      - jan19-rev:
+          requires:
+            - parser_derive
+      - tax-domino:
+          requires:
+            - parser_derive
+      - prometheus-v2:
+          requires:
+            - tax-domino
+      - UNUSED_INI:
+          requires:
+            - tax-domino
+      - v9-beta:
+          requires:
+            - UNUSED_INI
+      - random_texture:
+          requires:
+            - UNUSED_INI
+      - sm-3:
+          requires:
+            - random_texture
+      - arrPage:
+          requires:
+            - random_texture
+      - rigel-ng:
+          requires:
+            - arrPage
+      - i1:
+          requires:
+            - arrPage
+      - charlie:
+          requires:
+            - i1
+      - Copy-AvatarProperty:
+          requires:
+            - i1
+      - beta-v7:
+          requires:
+            - Copy-AvatarProperty
+      - registry_nightly_s390x:
+          requires:
+            - Copy-AvatarProperty
+      - chen-build:
+          requires:
+            - registry_nightly_s390x
+      - ledger_996:
+          requires:
+            - registry_nightly_s390x
+      - Deploy_App4:
+          requires:
+            - ledger_996
+      - flipwish:
+          requires:
+            - ledger_996
+      - feb4-rev:
+          requires:
+            - flipwish
